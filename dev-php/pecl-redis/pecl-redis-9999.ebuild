@@ -2,17 +2,19 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
 PHP_EXT_NAME="redis"
 PHP_EXT_INI="yes"
 PHP_EXT_ZENDEXT="no"
 
-USE_PHP="php5-4 php5-5"
+USE_PHP="php5-5 php5-4"
+
+DOCS="README ChangeLog"
 
 inherit php-ext-source-r2 git-2
 
-DESCRIPTION="A PHP extension for Redis"
+DESCRIPTION="This extension provides an API for communicating with Redis servers"
 HOMEPAGE="https://github.com/nicolasff/phpredis"
 EGIT_REPO_URI="git://github.com/nicolasff/phpredis.git"
 EGIT_BRANCH="master"
@@ -21,12 +23,17 @@ SRC_URI=""
 LICENSE="PHP-3.01"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="igbinary"
 
-DEPEND=""
+DEPEND="igbinary? ( dev-php/igbinary )"
 RDEPEND="${DEPEND}"
 
-my_conf="--enable-redis"
+src_configure() {
+	my_conf="--enable-redis
+		$(use_enable igbinary redis-igbinary)"
+
+	php-ext-source-r2_src_configure
+}
 
 src_unpack() {
     git-2_src_unpack
