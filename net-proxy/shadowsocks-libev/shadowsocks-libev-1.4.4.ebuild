@@ -19,6 +19,12 @@ RDEPEND="${DEPEND}"
 src_install() {
 	emake DESTDIR="${D}" install
 
+	dodir /etc/shadowsocks
+	cp "${FILESDIR}"/config.json "${ED}"/etc/shadowsocks/config.json || die
+
+	newinitd "${FILESDIR}"/ss-server.initd ss-server
+
 	dodoc Changes README.md
+	doman shadowsocks.8
 }
 
